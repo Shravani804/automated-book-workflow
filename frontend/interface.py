@@ -5,23 +5,18 @@ import streamlit.components.v1 as components
 
 
 # Load file content or return empty string
-BACKEND_URL = "https://automated-book-workflow.onrender.com"
+def load_file(path):
+    if Path(path).exists():
+        return Path(path).read_text(encoding="utf-8")
+    return ""
 
-def fetch_backend_version(stage: str) -> str:
-    try:
-        response = requests.get(f"{BACKEND_URL}/get_version/{stage}")
-        if response.status_code == 200:
-            return response.json().get("content", "")
-        else:
-            return ""
-    except:
-        return ""
+st.set_page_config(page_title="Chapter Editor", layout="wide")
+st.title("📚 Finalize Your Chapter")
 
-# Load versions from backend
-original = fetch_backend_version("original")
-spun = fetch_backend_version("spun")
-reviewed = fetch_backend_version("reviewed")
-
+# Load versions
+original = load_file("data/chapter1.txt")
+spun = load_file("data/chapter1_spun.txt")
+reviewed = load_file("data/chapter1_reviewed.txt")
 
 # Display sections
 st.subheader("🔹 Original Chapter (Scraped)")
@@ -51,7 +46,7 @@ with centered_cols[1]:  # center column
 
         # Save to backend and ChromaDB
         try:
-            res = requests.post("https://automated-book-workflow.onrender.com/finalize", json={"content": final})
+            res = requests.post("http://127.0.0.1:8000/finalize", json={"content": final})
             res.raise_for_status()
             data = res.json()
             version_id = data.get("id")
@@ -133,4 +128,3 @@ with dl_cols[1]:
         mime="text/plain",
         use_container_width=True
     )
-
