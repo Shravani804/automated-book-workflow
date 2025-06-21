@@ -55,7 +55,7 @@ with centered_cols[1]:  # center column
         except Exception as e:
             st.error(f"❌ Failed to save via API: {e}")
 
-# --- Rating Section ---
+# Rating Section
 if "version_id" in st.session_state:
     # st.markdown("### ⭐ Rate This Final Version")
 
@@ -117,7 +117,7 @@ if "version_id" in st.session_state:
     """,
     height=200,
 )
-# --- Download Button Centered ---
+# Download Button Centered
 st.markdown("---")
 dl_cols = st.columns(3)
 with dl_cols[1]:

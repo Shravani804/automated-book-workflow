@@ -25,7 +25,7 @@ class TextInput(BaseModel):
 # Writer endpoint
 @app.post("/write")
 def write_chapter(data: TextInput):
-    prompt = f"Rewrite the following content in a creative and engaging storytelling style:\n\n{data.content}"
+    prompt = f"You are a narrative editor. Refine and rewrite this input into a vivid, natural storytelling style while preserving the core ideas:\n\n{data.content}"
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(prompt)
     result = response.text.strip()

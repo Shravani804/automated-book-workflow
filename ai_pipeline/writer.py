@@ -8,13 +8,17 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 def spin_text(text: str) -> str:
-    prompt = f"Rewrite the following content in a creative and engaging storytelling style:\n\n{text}"
+    prompt = f"Transform the input passage into a vivid, immersive storytelling format, focusing on clarity, creativity, and natural narrative flow:\n\n{text}"
 
-    model = genai.GenerativeModel(model_name="gemini-1.5-flash")  # or "gemini-1.5-pro"
+    model = genai.GenerativeModel(model_name="gemini-1.5-flash")  
 
-    response = model.generate_content(prompt)
+    try:
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"❌ AI Rewrite Failed: {e}")
+        return ""
 
-    return response.text.strip()
 
 def main():
     input_path = Path("data/chapter1.txt")

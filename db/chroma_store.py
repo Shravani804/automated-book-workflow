@@ -8,6 +8,7 @@ chroma_client = chromadb.PersistentClient(path="chromadb_store")
 # Create or load the collection
 collection = chroma_client.get_or_create_collection(name="chapter_versions")
 
+# Saving the final version along with its ID
 def save_version(chapter_id: str, stage: str, content: str, reward: float = 0.0) -> str:
     version_id = f"{chapter_id}_{stage}_{uuid4()}"
     collection.add(
@@ -25,6 +26,7 @@ def save_version(chapter_id: str, stage: str, content: str, reward: float = 0.0)
 def search_similar(query: str, top_k: int = 3):
     return collection.query(query_texts=[query], n_results=top_k)
 
+# Searching for the best version among all related versions
 def get_best_version(chapter_id: str) -> str:
     results = collection.get(
         where={"chapter": chapter_id},

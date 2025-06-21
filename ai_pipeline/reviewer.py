@@ -7,14 +7,18 @@ import google.generativeai as genai
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+#Reviewing the content using Gemini model
 def review_text(text: str) -> str:
-    prompt = f"Please review the following story and improve it for grammar, clarity, and flow:\n\n{text}"
+    prompt = f"As a language editor, revise the passage below to improve sentence flow, fix grammar issues, and enhance clarity for better readability:\n\n{text}"
 
-    model = genai.GenerativeModel(model_name="gemini-1.5-flash")  # You can switch to "gemini-1.5-pro"
+    model = genai.GenerativeModel(model_name="gemini-1.5-flash") 
 
-    response = model.generate_content(prompt)
-
-    return response.text.strip()
+    try:
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"Error during AI content generation: {e}")
+        return "ERROR: Review failed."
 
 def main():
     input_path = Path("data/chapter1_spun.txt")
