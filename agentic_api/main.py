@@ -5,7 +5,6 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 from db.chroma_store import save_version 
-# from fastapi.responses import JSONResponse
 
 # Load API Key
 load_dotenv()
@@ -44,11 +43,6 @@ def review_chapter(data: TextInput):
     Path("data/chapter1_reviewed.txt").write_text(result, encoding="utf-8")
     return {"message": "Reviewed content saved", "reviewed": result}
 
-# Finalize endpoint
-# @app.post("/finalize")
-# def save_final_version(data: TextInput):
-#     Path("data/chapter1_final.txt").write_text(data.content, encoding="utf-8")
-#     return {"message": "Final version saved"}
 @app.post("/finalize")
 def save_final_version(data: TextInput):
     Path("data/chapter1_final.txt").write_text(data.content, encoding="utf-8")
@@ -77,17 +71,3 @@ def rate_version(data: RatingInput):
 @app.get("/")
 def read_root():
     return {"message": "FastAPI backend is running!"}
-
-# @app.get("/get_version/{stage}")
-# def get_version(stage: str):
-#     file_map = {
-#         "original": "data/chapter1.txt",
-#         "spun": "data/chapter1_spun.txt",
-#         "reviewed": "data/chapter1_reviewed.txt",
-#         "final": "data/chapter1_final.txt"
-#     }
-#     path = file_map.get(stage)
-#     if path and Path(path).exists():
-#         return {"content": Path(path).read_text(encoding="utf-8")}
-#     return JSONResponse(content={"error": "Content not found"}, status_code=404)
-
